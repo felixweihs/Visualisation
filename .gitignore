@@ -1,0 +1,7 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+data/fps.xlsx
+data/gapminder.csv
+data/troops.csv
