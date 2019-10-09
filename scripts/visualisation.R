@@ -147,3 +147,15 @@ rough_plot + theme_linedraw()
 
 #Save plots
 ggsave("results/my_first_plot2.jpg", plot = rough_plot, width = 12, height = 12, units = "cm")
+
+
+#Multipanel figures with cowplot
+install.packages("cowplot")
+library(cowplot)
+
+plot1 <- ggplot(gapminder, aes(x = gdpPercap, y = lifeExp)) + geom_point()
+plot2 <- ggplot(gapminder, aes(x = continent, y = lifeExp)) + geom_boxplot()
+plot3 <- ggplot(gapminder, aes(x = gdpPercap, y = pop)) + geom_point()
+plot4 <- ggplot(gapminder, aes(x = lifeExp, y = pop)) + geom_point()
+
+plot_grid(plot1, plot2, plot3, plot4)
