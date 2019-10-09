@@ -78,20 +78,27 @@ BOM_stations_tidy <- BOM_stations %>%
   gather(Station_name, name, -info) %>% #tidy data intermediate
   filter(info == "state") %>%  #Only select rows with state
   select(Station_number = Station_name, name) %>% #Only retain colums with station names and states
-  mutate(Station_number = as.numeric(Station_number)) #Convert station names from character to double
+  mutate(Station_number = as.numeric(Station_number)) %>%  #Convert station names from character to double
+  mutate(State = name) #Clean up names
 
 #Merge station rainfall information with state information
 BOM_data_rainfall_merged <- inner_join(BOM_stations_tidy, BOM_data_avrg_rainfall)
 
-#Plot Plotting rainffall
+#Plotting average rainfall per month and station
 question_4 <- ggplot(
   data = BOM_data_rainfall_merged, 
-  mapping = aes(y = mean_rainfall, x = Month, group = Station_number, colour = name)
-) + geom_line(size = 2)
-  labs(title = "Average rainfall by station as a function of time", 
+  mapping = aes(y = mean_rainfall, x = Month, group = Station_number, colour = State)
+) + geom_line(size = 2) + 
+      labs(title = "Average rainfall by station and month", 
        x = "Month", 
        y = "Average Rainfall [mm]",
-       caption = "Data source: BOM_stations") 
+       caption = "Data source: BOM_stations") + 
+  theme(legend.position="bottom",
+        legend.title = element_text(colour="black", size=14, face="bold"),
+        axis.title.x = element_text(face="bold"),
+        axis.title.y = element_text(face="bold"))
+# scale_x_continuous(breaks = c("1","2","3","4","5","6","7","8","9","10","11","12"), labels=c("Jun", "Feb","Mar","Jun","Feb","Mar", "Jun", "Feb", "Mar", "Jun", "Feb","Mar"))
+
 ggsave("results/question4.jpg", plot = question_4, width = 14, height = 14, units = "cm")
 
 
